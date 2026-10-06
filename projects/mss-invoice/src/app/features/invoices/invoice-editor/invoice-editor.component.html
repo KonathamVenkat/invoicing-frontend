@@ -128,7 +128,7 @@
     <h3>Line Items</h3>
     <div formArrayName="lines">
       @for (lineGroup of lines.controls; track lineGroup; let i = $index) {
-        <div class="form-row" [formGroupName]="i" role="group" [attr.aria-label]="'Line ' + (i + 1)">
+        <div class="form-row line-row" [formGroupName]="i" role="group" [attr.aria-label]="'Line ' + (i + 1)">
           <mat-form-field appearance="outline" class="line-product">
             <mat-label>Product (optional)</mat-label>
             <mat-select formControlName="productId" (selectionChange)="onProductSelected(i, $event.value)">
@@ -178,9 +178,10 @@
           </mat-form-field>
 
           <div class="line-total">
-            <strong>
-              <span class="cdk-visually-hidden">Line total </span>{{ lineTotals()[i]?.total | number: '1.3-3' }}
-            </strong>
+            <div class="line-total-amount">
+              <span class="line-total-label">Line total</span>
+              <strong>{{ lineTotals()[i]?.total | number: '1.3-3' }}</strong>
+            </div>
             @if (!readOnly()) {
               <button
                 mat-icon-button

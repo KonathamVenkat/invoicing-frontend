@@ -36,34 +36,139 @@
   font-size: 13.5px;
 }
 
-.line-product {
-  flex: 2 1 200px;
+/* One line item = one row: product | description | qty | unit price | VAT % | line total.
+   A grid keeps the columns aligned from line to line; it collapses on narrower screens. */
+.line-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 2fr) minmax(200px, 3fr) minmax(90px, 0.8fr) minmax(110px, 1fr) minmax(90px, 0.8fr) auto;
+  gap: 0 16px;
+  align-items: start;
 }
 
-.line-description {
-  flex: 3 1 260px;
+.line-row > * {
+  flex: none;
+  min-width: 0;
 }
 
+@media (max-width: 1180px) {
+  .line-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* Stacked lines need a visible break between one line item and the next. */
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px dashed var(--app-border);
+  }
+  .line-product,
+  .line-description {
+    grid-column: span 3;
+  }
+  .line-total {
+    grid-column: span 3;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 640px) {
+  .line-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .line-product,
+  .line-description,
+  .line-total {
+    grid-column: span 2;
+  }
+}
+
+/* Per-line total: a labelled pill that lines up with the form fields beside it. */
 .line-total {
   display: flex;
   align-items: center;
+  gap: 12px;
+  align-self: flex-start;
+  /* Same height as an outlined form field so the pill centres on the inputs. */
+  min-height: 56px;
 }
 
+.line-total-amount {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 112px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  background: var(--app-tint);
+  border: 1px solid var(--app-tint-strong);
+  text-align: right;
+}
+
+.line-total-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #475569;
+}
+
+.line-total-amount strong {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--app-navy);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Totals panel: soft card, quiet Subtotal/VAT rows, brand-gradient Grand Total. */
 .totals {
-  max-width: 320px;
-  margin-left: auto;
-  margin-top: 24px;
+  max-width: 380px;
+  margin: 28px 0 0 auto;
+  padding: 18px 20px 20px;
+  border-radius: var(--app-radius);
+  border: 1px solid var(--app-border);
+  background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+  box-shadow: var(--app-shadow-sm);
 }
 
 .totals-row {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  font-size: 14.5px;
+  color: #475569;
+  font-variant-numeric: tabular-nums;
+}
+
+.totals-row + .totals-row:not(.totals-grand) {
+  border-top: 1px dashed #cbd5e1;
+}
+
+.totals-row span:last-child {
+  font-weight: 600;
+  color: var(--app-ink);
 }
 
 .totals-grand {
-  font-weight: bold;
-  border-top: 2px solid var(--mat-sys-outline);
-  padding-top: 4px;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: var(--app-grad-brand);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 18px rgba(37, 99, 235, 0.3);
+}
+
+.totals-grand span:first-child {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.totals-grand span:last-child {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
 }
 
 .notes-field {
@@ -187,7 +292,7 @@
 }
 
 /* Destructive action: shown in the theme's error colour. */
-/* The delete icon is a glossy red tile (styles.css); this only adds space after the line total. */
+/* The delete icon is a glossy red tile (styles.css); .line-total's gap provides the spacing. */
 .remove-line-button {
-  margin-left: 12px;
+  flex: none;
 }
