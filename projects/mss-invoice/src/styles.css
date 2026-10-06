@@ -159,6 +159,15 @@ app-icon[name='check_circle'] { --act-grad: linear-gradient(135deg, #047857, #05
   box-shadow: none;
 }
 
+/* Row-action columns: keep the buttons on one line and let the column shrink to fit them.
+   Without this, table auto-layout sizes the column to its narrowest content (one button) and the
+   second button wraps underneath. */
+.mat-mdc-table th.mat-column-actions,
+.mat-mdc-table td.mat-column-actions {
+  width: 1%;
+  white-space: nowrap;
+}
+
 /* Icons beside a button label ("Correct Invoice", "PDF", "Export CSV"): a small glossy chip. */
 :is(.mat-mdc-button, .mat-mdc-outlined-button, .mat-mdc-unelevated-button) app-icon:is([name='edit'], [name='delete'], [name='open_in_new'], [name='download'], [name='pdf'], [name='check_circle']) {
   display: inline-flex;
