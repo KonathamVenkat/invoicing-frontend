@@ -92,6 +92,18 @@
   border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
+.payments-table th.col-right,
+.payments-table td.col-right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Space between the right-aligned amount and the column after it. */
+.payments-table th.col-right + th,
+.payments-table td.col-right + td {
+  padding-left: 32px;
+}
+
 .payments-table th {
   font-weight: 600;
   color: var(--mat-sys-on-surface-variant);

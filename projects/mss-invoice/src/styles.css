@@ -179,7 +179,14 @@ body {
 /* Amounts line up by digit so columns of money are easy to scan and compare. */
 .list-card td.mat-mdc-cell,
 .mat-mdc-table td { font-variant-numeric: tabular-nums; }
-.col-right { text-align: right; }
+/* Material's own cell rule (text-align: left) loads after this file and beat a plain .col-right,
+   so the selector is scoped to the table to win. Money and number columns read right-aligned. */
+.col-right,
+.mat-mdc-table .col-right { text-align: right; }
+/* A left-aligned column that follows a right-aligned amount gets extra space so the digits and
+   the next value (e.g. a status chip) don't read as one block. */
+.list-card th.col-right + th.mat-mdc-header-cell,
+.list-card td.col-right + td.mat-mdc-cell { padding-left: 32px; }
 .empty-state { padding: 32px; text-align: center; color: var(--mat-sys-on-surface-variant); }
 
 /* Stands in for an invoice number on drafts (dashboard and invoice list). */
