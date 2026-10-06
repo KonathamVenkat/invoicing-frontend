@@ -1,0 +1,180 @@
+.locked-banner {
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-on-tertiary-container) 35%, transparent);
+  border-radius: 4px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-size: 13.5px;
+}
+
+.correction-banner {
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-on-error-container) 35%, transparent);
+  border-radius: 4px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-size: 13.5px;
+}
+
+.correction-banner .full-width {
+  display: block;
+  margin-top: 8px;
+}
+
+.contract-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-on-error-container) 35%, transparent);
+  border-radius: 4px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-size: 13.5px;
+}
+
+.line-product {
+  flex: 2 1 200px;
+}
+
+.line-description {
+  flex: 3 1 260px;
+}
+
+.line-total {
+  display: flex;
+  align-items: center;
+}
+
+.totals {
+  max-width: 320px;
+  margin-left: auto;
+  margin-top: 24px;
+}
+
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totals-grand {
+  font-weight: bold;
+  border-top: 2px solid var(--mat-sys-outline);
+  padding-top: 4px;
+}
+
+.notes-field {
+  margin-top: 16px;
+}
+
+.payments-card {
+  margin-top: 24px;
+}
+
+.payments-heading {
+  margin-top: 0;
+}
+
+.payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  margin-bottom: 12px;
+}
+
+.payments-table th,
+.payments-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.payments-table th {
+  font-weight: 600;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.payments-summary {
+  display: flex;
+  gap: 24px;
+  justify-content: flex-end;
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}
+
+.payment-form {
+  align-items: flex-start;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  padding-top: 16px;
+}
+
+.payment-reference-field {
+  flex: 2 1 240px;
+}
+
+.revision-history-heading {
+  margin-top: 32px;
+}
+
+.revision-reason {
+  margin-top: 0;
+}
+
+.revision-lines {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  margin-bottom: 12px;
+}
+
+.revision-lines th,
+.revision-lines td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.revision-lines th {
+  font-weight: 600;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.revision-totals {
+  display: flex;
+  gap: 24px;
+  justify-content: flex-end;
+  font-size: 13.5px;
+}
+
+/*
+ * Explicit disabled-field styling — not relying on Angular Material's theme-token-driven
+ * disabled color, since that token doesn't appear to be rendering for plain text inputs
+ * under the current M3 theme (mat-select's disabled look comes from a different internal
+ * mechanism and rendered correctly; matInput's didn't). This targets the actual Material
+ * DOM structure directly so a locked invoice's line fields are unmistakably non-editable
+ * regardless of what the theme token does. ::ng-deep is deprecated but remains the
+ * accepted approach for reaching into Material component internals like this — there's
+ * still no fully supported alternative for this specific case.
+ */
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-disabled .mat-mdc-text-field-wrapper {
+  background-color: var(--mat-sys-surface-container-highest);
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-disabled .mdc-text-field__input {
+  color: var(--mat-sys-on-surface-variant) !important;
+  -webkit-text-fill-color: var(--mat-sys-on-surface-variant) !important;
+  cursor: not-allowed;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-disabled input,
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-disabled textarea {
+  pointer-events: none;
+}
+
+/* Destructive action: shown in the theme's error colour. */
+.remove-line-button {
+  --mat-icon-button-icon-color: var(--mat-sys-error);
+}

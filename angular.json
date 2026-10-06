@@ -1,0 +1,91 @@
+﻿{
+    "$schema":  "./node_modules/@angular/cli/lib/config/schema.json",
+    "version":  1,
+    "cli":  {
+                "packageManager":  "npm"
+            },
+    "newProjectRoot":  "projects",
+    "projects":  {
+                     "mss-invoice":  {
+                                         "projectType":  "application",
+                                         "schematics":  {
+
+                                                        },
+                                         "root":  "projects/mss-invoice",
+                                         "sourceRoot":  "projects/mss-invoice/src",
+                                         "prefix":  "app",
+                                         "architect":  {
+                                                           "build":  {
+                                                                         "builder":  "@angular/build:application",
+                                                                         "options":  {
+                                                                                         "browser":  "projects/mss-invoice/src/main.ts",
+                                                                                         "tsConfig":  "projects/mss-invoice/tsconfig.app.json",
+                                                                                         "assets":  [
+                                                                                                        {
+                                                                                                            "glob":  "**/*",
+                                                                                                            "input":  "projects/mss-invoice/public"
+                                                                                                        }
+                                                                                                    ],
+                                                                                         "styles":  [
+                                                                                                        "projects/mss-invoice/src/material-theme.scss",
+                                                                                                        "projects/mss-invoice/src/styles.css"
+                                                                                                    ],
+                                                                                         "server":  "projects/mss-invoice/src/main.server.ts",
+                                                                                         "outputMode":  "server",
+                                                                                         "security":  {
+                                                                                                          "allowedHosts":  [
+                                                                                                                               ".devtunnels.ms"
+                                                                                                                           ]
+                                                                                                      },
+                                                                                         "ssr":  {
+                                                                                                     "entry":  "projects/mss-invoice/src/server.ts"
+                                                                                                 }
+                                                                                     },
+                                                                         "configurations":  {
+                                                                                                "production":  {
+                                                                                                                   "budgets":  [
+                                                                                                                                   {
+                                                                                                                                       "type":  "initial",
+                                                                                                                                       "maximumWarning":  "500kB",
+                                                                                                                                       "maximumError":  "1MB"
+                                                                                                                                   },
+                                                                                                                                   {
+                                                                                                                                       "type":  "anyComponentStyle",
+                                                                                                                                       "maximumWarning":  "4kB",
+                                                                                                                                       "maximumError":  "8kB"
+                                                                                                                                   }
+                                                                                                                               ],
+                                                                                                                   "outputHashing":  "all"
+                                                                                                               },
+                                                                                                "development":  {
+                                                                                                                    "optimization":  false,
+                                                                                                                    "extractLicenses":  false,
+                                                                                                                    "sourceMap":  true
+                                                                                                                }
+                                                                                            },
+                                                                         "defaultConfiguration":  "production"
+                                                                     },
+                                                           "serve":  {
+                                                                         "builder":  "@angular/build:dev-server",
+                                                                         "options":  {
+                                                                                         "allowedHosts":  [
+                                                                                                              ".devtunnels.ms"
+                                                                                                          ]
+                                                                                     },
+                                                                         "configurations":  {
+                                                                                                "production":  {
+                                                                                                                   "buildTarget":  "mss-invoice:build:production"
+                                                                                                               },
+                                                                                                "development":  {
+                                                                                                                    "buildTarget":  "mss-invoice:build:development"
+                                                                                                                }
+                                                                                            },
+                                                                         "defaultConfiguration":  "development"
+                                                                     },
+                                                           "test":  {
+                                                                        "builder":  "@angular/build:unit-test"
+                                                                    }
+                                                       }
+                                     }
+                 }
+}

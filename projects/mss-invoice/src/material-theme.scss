@@ -1,0 +1,40 @@
+// Material 3 theme for mss-invoice. The palettes in _theme-colors.scss were generated from the
+// invoice-tool navy (#1E3A5F) and blue accent (#2563EB) with:
+//   ng generate @angular/material:m3-theme --primary-color=#1E3A5F --tertiary-color=#2563EB --directory=projects/mss-invoice/src/
+// Screens read colours through the system variables this defines (var(--mat-sys-*)).
+@use '@angular/material' as mat;
+@use './theme-colors' as colors;
+
+html {
+  color-scheme: light;
+  @include mat.theme(
+    (
+      color: (
+        primary: colors.$primary-palette,
+        tertiary: colors.$tertiary-palette,
+      ),
+      // Inter is loaded from Google Fonts in index.html; the fallbacks keep text sans-serif
+      // if the font service is unreachable (otherwise Material falls back to a serif font).
+      typography: (
+        plain-family: (Inter, Roboto, 'Helvetica Neue', sans-serif),
+        brand-family: (Inter, Roboto, 'Helvetica Neue', sans-serif),
+      ),
+      density: 0,
+    )
+  );
+
+  // Solid navy top bar (M3's default toolbar is pale). #1E3A5F is the brand navy; white text on
+  // it is 11.5:1 contrast.
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: #1e3a5f,
+      container-text-color: #ffffff,
+    )
+  );
+}
+
+// Forms and tables use compact spacing (project UI rules).
+.mat-mdc-form-field,
+.mat-mdc-table {
+  @include mat.theme((density: -1));
+}

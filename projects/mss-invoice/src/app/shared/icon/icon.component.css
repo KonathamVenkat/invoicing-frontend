@@ -1,0 +1,9 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+:host svg {
+  display: block;
+}

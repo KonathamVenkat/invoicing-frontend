@@ -1,0 +1,30 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Reports</h2>
+  </div>
+
+  <div class="tile-grid">
+    @for (tile of tiles; track tile.title) {
+      @if (tile.route) {
+        <a class="tile-link" [routerLink]="tile.route">
+          <mat-card class="tile-card">
+            <mat-card-content>
+              <app-icon [name]="tile.icon" [size]="28" aria-hidden="true" />
+              <h3>{{ tile.title }}</h3>
+              <p>{{ tile.description }}</p>
+            </mat-card-content>
+          </mat-card>
+        </a>
+      } @else {
+        <mat-card class="tile-card tile-card--disabled">
+          <mat-card-content>
+            <app-icon [name]="tile.icon" [size]="28" aria-hidden="true" />
+            <h3>{{ tile.title }}</h3>
+            <p>{{ tile.description }}</p>
+            <span class="coming-soon">Coming soon</span>
+          </mat-card-content>
+        </mat-card>
+      }
+    }
+  </div>
+</div>

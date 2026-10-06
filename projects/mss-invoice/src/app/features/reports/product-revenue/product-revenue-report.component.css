@@ -1,0 +1,14 @@
+.year-field {
+  width: 120px;
+}
+
+.totals-row {
+  height: 48px;
+  font-weight: 600;
+  background: var(--mat-sys-surface-container-high);
+}
+
+.totals-row td.mat-mdc-footer-cell {
+  padding: 0 16px;
+  border-top: 2px solid var(--mat-sys-outline-variant);
+}

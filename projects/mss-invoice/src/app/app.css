@@ -1,0 +1,31 @@
+.topbar {
+  /* Icon buttons in the top bar sit on the primary colour. */
+  --mat-icon-button-icon-color: var(--mat-sys-on-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo {
+  height: 34px;
+  width: auto;
+}
+.app-name {
+  font-size: 18px;
+  font-weight: 500;
+}
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+  font-size: 13px;
+}
+.shell {
+  height: calc(100vh - 64px);
+}
+.sidenav {
+  width: 260px;
+}
+.active-link {
+  background: var(--mat-sys-surface-container-highest);
+}

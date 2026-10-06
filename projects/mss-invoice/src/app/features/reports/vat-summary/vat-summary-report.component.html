@@ -1,0 +1,70 @@
+<div class="page-container">
+  <div class="page-header">
+    <a mat-button routerLink="/reports">
+      <app-icon name="back" aria-hidden="true" />
+      Back to Reports
+    </a>
+    <h2>VAT Summary</h2>
+    <span class="spacer"></span>
+    <mat-form-field appearance="outline" class="year-field">
+      <mat-label>Year</mat-label>
+      <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
+        @for (year of years(); track year) {
+          <mat-option [value]="year">{{ year }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-card class="list-card">
+    <div class="list-card-header">
+      <h3>Monthly &amp; Quarterly VAT Totals — {{ selectedYear() }}</h3>
+    </div>
+
+    <table mat-table [dataSource]="displayRows()" [trackBy]="trackByLabel" class="full-width">
+      <ng-container matColumnDef="label">
+        <th mat-header-cell *matHeaderCellDef>Period</th>
+        <td mat-cell *matCellDef="let row">{{ row.data.label }}</td>
+        <td mat-footer-cell *matFooterCellDef>Total</td>
+      </ng-container>
+      <ng-container matColumnDef="subtotal">
+        <th mat-header-cell *matHeaderCellDef class="col-right">Subtotal</th>
+        <td mat-cell *matCellDef="let row" class="col-right">
+          {{ row.data.subtotal | currency: 'OMR' : 'code' : '1.3-3' }}
+        </td>
+        <td mat-footer-cell *matFooterCellDef class="col-right">
+          {{ summary()?.total?.subtotal | currency: 'OMR' : 'code' : '1.3-3' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="vatAmount">
+        <th mat-header-cell *matHeaderCellDef class="col-right">VAT</th>
+        <td mat-cell *matCellDef="let row" class="col-right">
+          {{ row.data.vatAmount | currency: 'OMR' : 'code' : '1.3-3' }}
+        </td>
+        <td mat-footer-cell *matFooterCellDef class="col-right">
+          {{ summary()?.total?.vatAmount | currency: 'OMR' : 'code' : '1.3-3' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="grandTotal">
+        <th mat-header-cell *matHeaderCellDef class="col-right">Total</th>
+        <td mat-cell *matCellDef="let row" class="col-right">
+          <strong>{{ row.data.grandTotal | currency: 'OMR' : 'code' : '1.3-3' }}</strong>
+        </td>
+        <td mat-footer-cell *matFooterCellDef class="col-right">
+          <strong>{{ summary()?.total?.grandTotal | currency: 'OMR' : 'code' : '1.3-3' }}</strong>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns; when: isMonthRow"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns; when: isQuarterRow" class="quarter-row"></tr>
+      @if (displayRows().length > 0) {
+        <tr mat-footer-row *matFooterRowDef="columns" class="totals-row"></tr>
+      }
+    </table>
+
+    @if (!loading() && summary()?.total?.grandTotal === 0) {
+      <div class="empty-state">No issued invoices in {{ selectedYear() }} — all totals are zero.</div>
+    }
+  </mat-card>
+</div>

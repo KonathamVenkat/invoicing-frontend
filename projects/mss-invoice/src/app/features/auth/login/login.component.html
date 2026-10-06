@@ -1,0 +1,113 @@
+<div class="login-page">
+  <mat-card class="login-card">
+    <!-- Decorative header; colours come from the theme (see .sky-*, .peak-*, .doc-* in the CSS). -->
+    <svg
+      class="illustration"
+      aria-hidden="true"
+      focusable="false"
+      viewBox="0 0 600 300"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" class="sky-top" />
+          <stop offset="100%" class="sky-bottom" />
+        </linearGradient>
+      </defs>
+
+      <rect width="600" height="300" fill="url(#sky)" />
+
+      <!-- stars -->
+      <g class="light" opacity="0.8">
+        <circle cx="60" cy="40" r="1.6" />
+        <circle cx="130" cy="70" r="1.2" />
+        <circle cx="220" cy="35" r="1.6" />
+        <circle cx="310" cy="60" r="1.2" />
+        <circle cx="400" cy="30" r="1.6" />
+        <circle cx="470" cy="55" r="1.2" />
+        <circle cx="540" cy="35" r="1.6" />
+        <circle cx="90" cy="100" r="1" />
+        <circle cx="260" cy="90" r="1" />
+        <circle cx="440" cy="95" r="1" />
+      </g>
+
+      <!-- soft clouds -->
+      <g class="light" opacity="0.12">
+        <ellipse cx="120" cy="110" rx="70" ry="18" />
+        <ellipse cx="470" cy="120" rx="80" ry="20" />
+        <ellipse cx="300" cy="90" rx="60" ry="14" />
+      </g>
+
+      <!-- floating invoice cards -->
+      <g transform="translate(150,60)">
+        <rect x="0" y="0" width="70" height="90" rx="8" class="doc" />
+        <rect x="12" y="18" width="46" height="6" rx="3" class="doc-line" />
+        <rect x="12" y="32" width="46" height="4" rx="2" class="doc-line" opacity="0.6" />
+        <rect x="12" y="42" width="30" height="4" rx="2" class="doc-line" opacity="0.6" />
+        <rect x="12" y="66" width="46" height="10" rx="5" class="doc-line" />
+      </g>
+      <g transform="translate(410,90) scale(0.6)">
+        <rect x="0" y="0" width="70" height="90" rx="8" class="doc" opacity="0.85" />
+        <rect x="12" y="18" width="46" height="6" rx="3" class="doc-line" />
+        <rect x="12" y="32" width="46" height="4" rx="2" class="doc-line" opacity="0.6" />
+        <rect x="12" y="66" width="46" height="10" rx="5" class="doc-line" />
+      </g>
+
+      <!-- mountains -->
+      <polygon points="0,300 0,190 90,110 170,190 230,140 300,300" class="peak-far" />
+      <polygon points="220,300 330,150 420,220 480,160 600,300" class="peak-far" opacity="0.9" />
+      <polygon points="0,300 0,230 140,150 260,230 320,190 420,300" class="peak-near" />
+      <polygon points="350,300 460,190 560,260 600,230 600,300" class="peak-near" />
+    </svg>
+
+    <mat-card-content class="form-body">
+      <h1>Sign in to MSS Invoicing</h1>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <app-icon matPrefix name="person" [size]="18" aria-hidden="true" class="field-icon" />
+          <input #usernameField matInput formControlName="username" autocomplete="username" required />
+          @if (form.controls.username.hasError('required')) {
+            <mat-error>Enter your username</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <app-icon matPrefix name="lock" [size]="18" aria-hidden="true" class="field-icon" />
+          <input
+            #passwordField
+            matInput
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            required
+          />
+          @if (form.controls.password.hasError('required')) {
+            <mat-error>Enter your password</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-checkbox formControlName="remember">Keep me signed in</mat-checkbox>
+
+        <!-- Always rendered so screen readers reliably announce messages added to it. -->
+        <div class="error-region" role="alert">
+          @if (error()) {
+            <p class="error">{{ error() }}</p>
+          }
+        </div>
+
+        @if (signingIn()) {
+          <mat-progress-bar mode="indeterminate" aria-label="Signing in" />
+        }
+        <button type="submit" mat-flat-button class="full-width" [disabled]="signingIn()">
+          Sign in
+        </button>
+
+        <p class="hint">Forgot your password? Ask an administrator to reset it.</p>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

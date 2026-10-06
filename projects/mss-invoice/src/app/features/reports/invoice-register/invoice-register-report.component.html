@@ -1,0 +1,109 @@
+<div class="page-container">
+  <div class="page-header">
+    <a mat-button routerLink="/reports">
+      <app-icon name="back" aria-hidden="true" />
+      Back to Reports
+    </a>
+    <h2>Invoice Register</h2>
+    <span class="spacer"></span>
+    <button
+      type="button"
+      mat-flat-button
+      [disabled]="!register() || register()!.lines.length === 0"
+      (click)="exportCsv()"
+    >
+      <app-icon name="download" aria-hidden="true" />
+      Export CSV
+    </button>
+  </div>
+
+  <mat-card class="filters-card">
+    <div class="filters-card-header">
+      <span id="register-filters-title" class="filters-title">
+        <app-icon name="filter" [size]="16" aria-hidden="true" /> Filters
+      </span>
+      @if (hasActiveFilters()) {
+        <button mat-button type="button" (click)="clearFilters()" class="clear-btn">
+          Clear filters
+        </button>
+      }
+    </div>
+    <form [formGroup]="filterForm" class="filter-bar" role="search" aria-labelledby="register-filters-title">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="fromPicker" formControlName="from" />
+        <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="toPicker" formControlName="to" />
+        <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+      </mat-form-field>
+    </form>
+  </mat-card>
+
+  <mat-card class="list-card">
+    <div class="list-card-header">
+      <h3>Issued Invoices</h3>
+      <span class="list-count">{{ register()?.lines?.length ?? 0 }} invoice{{ (register()?.lines?.length ?? 0) === 1 ? '' : 's' }}</span>
+    </div>
+
+    <table mat-table [dataSource]="register()?.lines ?? []" [trackBy]="trackByInvoiceId" class="full-width">
+      <ng-container matColumnDef="invoiceNumber">
+        <th mat-header-cell *matHeaderCellDef>Invoice #</th>
+        <td mat-cell *matCellDef="let r">{{ r.invoiceNumber }}</td>
+        <td mat-footer-cell *matFooterCellDef>Total</td>
+      </ng-container>
+      <ng-container matColumnDef="invoiceDate">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let r">{{ r.invoiceDate | date: 'mediumDate' }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+      <ng-container matColumnDef="customerName">
+        <th mat-header-cell *matHeaderCellDef>Customer</th>
+        <td mat-cell *matCellDef="let r">{{ r.customerName }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+      <ng-container matColumnDef="subtotal">
+        <th mat-header-cell *matHeaderCellDef class="col-right">Subtotal</th>
+        <td mat-cell *matCellDef="let r" class="col-right">
+          {{ r.subtotal | currency: 'OMR' : 'code' : '1.3-3' }}
+        </td>
+        <td mat-footer-cell *matFooterCellDef class="col-right">
+          {{ register()?.totalSubtotal | currency: 'OMR' : 'code' : '1.3-3' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="vatAmount">
+        <th mat-header-cell *matHeaderCellDef class="col-right">VAT</th>
+        <td mat-cell *matCellDef="let r" class="col-right">
+          {{ r.vatAmount | currency: 'OMR' : 'code' : '1.3-3' }}
+        </td>
+        <td mat-footer-cell *matFooterCellDef class="col-right">
+          {{ register()?.totalVat | currency: 'OMR' : 'code' : '1.3-3' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="grandTotal">
+        <th mat-header-cell *matHeaderCellDef class="col-right">Grand Total</th>
+        <td mat-cell *matCellDef="let r" class="col-right">
+          <strong>{{ r.grandTotal | currency: 'OMR' : 'code' : '1.3-3' }}</strong>
+        </td>
+        <td mat-footer-cell *matFooterCellDef class="col-right">
+          <strong>{{ register()?.totalGrand | currency: 'OMR' : 'code' : '1.3-3' }}</strong>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      @if ((register()?.lines?.length ?? 0) > 0) {
+        <tr mat-footer-row *matFooterRowDef="columns" class="totals-row"></tr>
+      }
+    </table>
+
+    @if (!loading() && (register()?.lines?.length ?? 0) === 0) {
+      <div class="empty-state">No issued invoices in this period.</div>
+    }
+  </mat-card>
+</div>

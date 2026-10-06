@@ -1,0 +1,223 @@
+/* Colours come from the Material 3 theme in material-theme.scss (var(--mat-sys-*)).
+   Visual direction: flat "invoice & billing" look (navy, paid green, overdue red, neutral grey) —
+   solid colours, hairline borders, no gradients or heavy shadows, 150ms transitions. */
+:root {
+  --app-navy: #1e3a5f; /* brand chrome: top bar and card header strips (white text = 11.5:1) */
+  --app-accent-teal: #0f766e;
+  --app-accent-green: #047857;
+  --app-accent-orange: #b45309;
+  --app-accent-grey: #475569;
+  --app-accent-red: #b91c1c;
+  --app-accent-blue: #1d4ed8;
+  --app-border: var(--mat-sys-outline-variant);
+  --app-motion: 150ms ease-out;
+}
+
+/* Flat cards: drop Material's elevated-card shadow (a plain box-shadow loses to its own rule). */
+.stat-card,
+.form-card,
+.list-card,
+.filters-card {
+  --mat-card-elevated-container-elevation: none;
+  --mat-card-elevated-container-shadow-color: transparent;
+  border: 1px solid var(--app-border);
+}
+
+/* Card header strips are solid navy. Modifier classes only add a coloured bottom edge so cards
+   that sit side by side (dashboard charts) still read as distinct. */
+.form-card-header,
+.list-card-header {
+  background: var(--app-navy);
+  color: #fff;
+}
+
+/* Stat card: a flat mat-card with a tinted icon tile at the top left (KPI tile). Colour is never
+   the only cue — each tile also carries a text label. */
+.stat-card {
+  position: relative;
+  box-shadow: none;
+  border: 1px solid var(--app-border);
+  transition: border-color var(--app-motion);
+}
+.stat-card:hover {
+  border-color: var(--mat-sys-outline);
+}
+.stat-card .mat-mdc-card-content {
+  padding-top: 8px !important;
+}
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  margin: 16px 16px 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stat-icon--indigo { background: #e3eaf4; color: var(--app-navy); }
+.stat-icon--teal { background: #ccfbf1; color: var(--app-accent-teal); }
+.stat-icon--pink { background: var(--mat-sys-tertiary-container); color: var(--mat-sys-on-tertiary-container); }
+.stat-icon--green { background: #d1fae5; color: var(--app-accent-green); }
+.stat-icon--orange { background: #fef3c7; color: var(--app-accent-orange); }
+.stat-icon--grey { background: #e2e8f0; color: var(--app-accent-grey); }
+.stat-icon--red { background: #fee2e2; color: var(--app-accent-red); }
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--mat-sys-on-surface-variant);
+}
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shorter variant of .stat-card for report pages (the dashboard keeps the taller default). */
+.stat-card--compact .stat-icon {
+  width: 32px;
+  height: 32px;
+  margin: 12px 16px 0;
+  border-radius: 6px;
+}
+.stat-card--compact .mat-mdc-card-content {
+  padding-top: 6px !important;
+  padding-bottom: 10px !important;
+}
+.stat-card--compact .stat-value {
+  font-size: 20px;
+}
+.stat-card--compact .stat-card-footer {
+  padding: 6px 16px;
+}
+
+.stat-card-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--app-border);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 12px;
+}
+
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: Inter, Roboto, "Helvetica Neue", sans-serif;
+  background: var(--mat-sys-surface-container-low);
+  color: var(--mat-sys-on-surface);
+}
+
+/* Keyboard focus must always be visible (WCAG 2.4.7). */
+:focus-visible {
+  outline: 2px solid var(--app-accent-blue);
+  outline-offset: 2px;
+}
+
+/* Icons placed before the input (search boxes) need breathing room from the field border. */
+.mat-mdc-form-field-icon-prefix > app-icon { margin-inline: 12px 8px; color: var(--mat-sys-on-surface-variant); }
+
+.page-container { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+.spacer { flex: 1 1 auto; }
+.full-width { width: 100%; }
+.form-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.form-row > * { flex: 1 1 240px; }
+
+/* Row of .stat-card tiles. */
+.stat-row { margin: 8px 0 24px; }
+
+.form-card {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: none;
+  border: 1px solid var(--app-border);
+}
+.form-card-header { padding: 12px 24px; }
+.form-card-header h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.form-card-header--teal { border-bottom: 3px solid #2dd4bf; }
+.form-card-header--pink { border-bottom: 3px solid #60a5fa; }
+
+.list-card {
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: none;
+  border: 1px solid var(--app-border);
+}
+.list-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+}
+.list-card-header h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.list-count {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+.list-card table.full-width { width: 100%; }
+.list-card th.mat-mdc-header-cell {
+  background: var(--mat-sys-surface-container);
+  font-weight: 600;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--mat-sys-on-surface-variant);
+}
+.list-card th.mat-mdc-header-cell,
+.list-card td.mat-mdc-cell { padding: 0 16px; }
+.list-card tr.mat-mdc-row { height: 52px; transition: background-color var(--app-motion); }
+.list-card tr.mat-mdc-row:hover { background: var(--mat-sys-surface-container-high); }
+/* Amounts line up by digit so columns of money are easy to scan and compare. */
+.list-card td.mat-mdc-cell,
+.mat-mdc-table td { font-variant-numeric: tabular-nums; }
+.col-right { text-align: right; }
+.empty-state { padding: 32px; text-align: center; color: var(--mat-sys-on-surface-variant); }
+
+/* Stands in for an invoice number on drafts (dashboard and invoice list). */
+.draft-label { color: var(--mat-sys-on-surface-variant); font-style: italic; }
+
+/* Status chips: draft = neutral grey, issued/paid = green, cancelled/overdue = red.
+   The label always says the status too, so colour is never the only cue. */
+.status-chip { --mat-chip-outline-color: transparent; }
+.status-chip.status-draft {
+  --mat-chip-elevated-container-color: #e2e8f0;
+  --mat-chip-label-text-color: #334155;
+}
+.status-chip.status-issued {
+  --mat-chip-elevated-container-color: #d1fae5;
+  --mat-chip-label-text-color: #065f46;
+}
+.status-chip.status-cancelled {
+  --mat-chip-elevated-container-color: #fee2e2;
+  --mat-chip-label-text-color: #991b1b;
+}
+
+/* Contract expiry chips (active/expiring-soon/expired) reuse the same chip look. */
+.status-chip.status-active {
+  --mat-chip-elevated-container-color: #d1fae5;
+  --mat-chip-label-text-color: #065f46;
+}
+.status-chip.status-expiring-soon {
+  --mat-chip-elevated-container-color: #fef3c7;
+  --mat-chip-label-text-color: #92400e;
+}
+.status-chip.status-expired {
+  --mat-chip-elevated-container-color: #fee2e2;
+  --mat-chip-label-text-color: #991b1b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

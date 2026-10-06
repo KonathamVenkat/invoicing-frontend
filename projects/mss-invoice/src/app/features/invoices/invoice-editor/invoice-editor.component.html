@@ -1,0 +1,361 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2 #pageHeading tabindex="-1">
+      @if (!invoiceId()) {
+        New Invoice
+      } @else if (invoiceStatus() === 'DRAFT') {
+        Draft Invoice
+      } @else {
+        Invoice {{ invoiceNumber() }}
+      }
+    </h2>
+    <span class="spacer"></span>
+    @if (!readOnly()) {
+      <button type="button" mat-flat-button (click)="save()">
+        {{ correctionMode() ? 'Save Correction' : 'Save Draft' }}
+      </button>
+    }
+    @if (!correctionMode()) {
+      <button type="button" mat-button (click)="cancel()">Cancel</button>
+    }
+    @if (correctionMode()) {
+      <button type="button" mat-button (click)="cancelCorrection()">Cancel Correction</button>
+    }
+    @if (invoiceId() && !readOnly() && !correctionMode()) {
+      <button type="button" mat-stroked-button (click)="issue()">
+        Issue
+      </button>
+    }
+    @if (invoiceId() && canCorrect()) {
+      <button type="button" mat-flat-button (click)="startCorrection()">
+        <app-icon name="edit" aria-hidden="true" />
+        Correct Invoice
+      </button>
+    }
+    @if (invoiceId()) {
+      <button type="button" mat-stroked-button (click)="downloadPdf()">
+        <app-icon name="pdf" aria-hidden="true" />
+        PDF
+      </button>
+    }
+  </div>
+
+  @if (readOnly() && !correctionMode()) {
+    <div class="locked-banner" role="status">
+      This invoice has been issued and can no longer be edited.
+      @if (canCorrect()) {
+        Use "Correct Invoice" above to make a corrected version — the current version will be preserved in the revision history below.
+      } @else {
+        Use a credit note or cancellation for corrections.
+      }
+    </div>
+  }
+
+  <mat-card class="form-card">
+    <div class="form-card-header">
+      <h3 id="invoice-details-title">Invoice Details</h3>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="save()" aria-labelledby="invoice-details-title">
+    @if (correctionMode()) {
+      <div class="correction-banner">
+        Correcting issued invoice {{ invoiceNumber() }}. The current version will be
+        snapshotted to revision history before your changes apply.
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Reason for correction</mat-label>
+          <textarea #changeReasonField matInput formControlName="changeReason" rows="2" required></textarea>
+          @if (form.controls.changeReason.invalid) {
+            <mat-error>Explain why you're correcting this invoice</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
+
+    <mat-card-content>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Customer</mat-label>
+        <mat-select formControlName="customerId" required>
+          @for (c of customers(); track c.id) {
+            <mat-option [value]="c.id">{{ c.name }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.customerId.hasError('required')) {
+          <mat-error>Select a customer</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Invoice Date</mat-label>
+        <input matInput [matDatepicker]="invDatePicker" formControlName="invoiceDate" required />
+        <mat-datepicker-toggle matIconSuffix [for]="invDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #invDatePicker></mat-datepicker>
+        @if (form.controls.invoiceDate.hasError('required')) {
+          <mat-error>Enter an invoice date</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Due Date</mat-label>
+        <input matInput [matDatepicker]="dueDatePicker" formControlName="dueDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #dueDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Contract Number</mat-label>
+        <input matInput formControlName="contractNumber" />
+        <mat-hint>Filled in automatically from the customer/product's active contract</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contract Date</mat-label>
+        <input matInput [matDatepicker]="contractDatePicker" formControlName="contractDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="contractDatePicker" [disabled]="true"></mat-datepicker-toggle>
+        <mat-datepicker #contractDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    @if (contractWarning()) {
+      <div class="contract-warning" role="alert">
+        <app-icon name="contract" aria-hidden="true" />
+        {{ contractWarning() }}
+      </div>
+    }
+
+    <h3>Line Items</h3>
+    <div formArrayName="lines">
+      @for (lineGroup of lines.controls; track lineGroup; let i = $index) {
+        <div class="form-row" [formGroupName]="i" role="group" [attr.aria-label]="'Line ' + (i + 1)">
+          <mat-form-field appearance="outline" class="line-product">
+            <mat-label>Product (optional)</mat-label>
+            <mat-select formControlName="productId" (selectionChange)="onProductSelected(i, $event.value)">
+              <mat-option [value]="null">— Free text —</mat-option>
+              @for (p of filteredProducts(); track p.id) {
+                <mat-option [value]="p.id">{{ p.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="line-description">
+            <mat-label>Description</mat-label>
+            <input #lineDescription matInput formControlName="description" required />
+            @if (lineGroup.controls.description.hasError('required')) {
+              <mat-error>Enter a description</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Qty</mat-label>
+            <input matInput type="number" step="0.001" min="0.001" formControlName="quantity" required />
+            @if (lineGroup.controls.quantity.hasError('required')) {
+              <mat-error>Enter a quantity</mat-error>
+            } @else if (lineGroup.controls.quantity.hasError('min')) {
+              <mat-error>Quantity must be more than 0</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Unit Price</mat-label>
+            <input matInput type="number" step="0.001" min="0" formControlName="unitPrice" required />
+            @if (lineGroup.controls.unitPrice.hasError('required')) {
+              <mat-error>Enter a unit price</mat-error>
+            } @else if (lineGroup.controls.unitPrice.hasError('min')) {
+              <mat-error>Unit price can't be negative</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>VAT %</mat-label>
+            <input matInput type="number" step="0.01" min="0" formControlName="vatPct" required />
+            @if (lineGroup.controls.vatPct.hasError('required')) {
+              <mat-error>Enter a VAT rate (use 0 if exempt)</mat-error>
+            } @else if (lineGroup.controls.vatPct.hasError('min')) {
+              <mat-error>VAT rate can't be negative</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="line-total">
+            <strong>
+              <span class="cdk-visually-hidden">Line total </span>{{ lineTotals()[i]?.total | number: '1.3-3' }}
+            </strong>
+            @if (!readOnly()) {
+              <button
+                mat-icon-button
+                class="remove-line-button"
+                (click)="removeLine(i)"
+                type="button"
+                [attr.aria-label]="'Remove line ' + (i + 1)"
+              >
+                <app-icon name="delete" aria-hidden="true" />
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (!readOnly()) {
+      <button #addLineButton mat-stroked-button type="button" (click)="addLine()">
+        <app-icon name="add" aria-hidden="true" />
+        Add Line
+      </button>
+    }
+
+    <div class="totals">
+      <div class="totals-row">
+        <span>Subtotal</span><span>{{ totals().subtotal | currency: 'OMR' : 'code' : '1.3-3' }}</span>
+      </div>
+      <div class="totals-row">
+        <span>VAT</span><span>{{ totals().vat | currency: 'OMR' : 'code' : '1.3-3' }}</span>
+      </div>
+      <div class="totals-row totals-grand">
+        <span>Grand Total</span><span>{{ totals().total | currency: 'OMR' : 'code' : '1.3-3' }}</span>
+      </div>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width notes-field">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes" rows="2"></textarea>
+    </mat-form-field>
+    </mat-card-content>
+    </form>
+  </mat-card>
+
+  @if (invoiceStatus() === 'ISSUED') {
+    <mat-card class="payments-card">
+      <h3 class="payments-heading">Payments</h3>
+
+      @if (payments().length > 0) {
+        <table class="payments-table">
+          <caption class="cdk-visually-hidden">Payments recorded against this invoice</caption>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Method</th>
+              <th scope="col">Reference</th>
+              @if (canDeletePayment()) {
+                <th scope="col"><span class="cdk-visually-hidden">Actions</span></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of payments(); track p.id) {
+              <tr>
+                <td>{{ p.paymentDate | date: 'mediumDate' }}</td>
+                <td>{{ p.amount | currency: 'OMR' : 'code' : '1.3-3' }}</td>
+                <td>{{ p.paymentMethod }}</td>
+                <td>{{ p.referenceNote || '—' }}</td>
+                @if (canDeletePayment()) {
+                  <td>
+                    <button
+                      type="button"
+                      mat-icon-button
+                      class="remove-line-button"
+                      (click)="deletePayment(p)"
+                      [attr.aria-label]="'Delete payment recorded on ' + p.paymentDate"
+                    >
+                      <app-icon name="delete" aria-hidden="true" />
+                    </button>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div class="payments-summary">
+          <span>Total Paid: {{ totalPaid() | currency: 'OMR' : 'code' : '1.3-3' }}</span>
+          <span><strong>Balance Due: {{ balanceDue() | currency: 'OMR' : 'code' : '1.3-3' }}</strong></span>
+        </div>
+      } @else {
+        <p>No payments recorded yet.</p>
+      }
+
+      @if (canRecordPayment()) {
+        <form [formGroup]="paymentForm" (ngSubmit)="recordPayment()" class="form-row payment-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Payment Date</mat-label>
+            <input matInput [matDatepicker]="paymentDatePicker" formControlName="paymentDate" required />
+            <mat-datepicker-toggle matIconSuffix [for]="paymentDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #paymentDatePicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" step="0.001" min="0.001" formControlName="amount" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Method</mat-label>
+            <mat-select formControlName="paymentMethod" required>
+              @for (method of paymentMethods; track method) {
+                <mat-option [value]="method">{{ method }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="payment-reference-field">
+            <mat-label>Reference / Note</mat-label>
+            <input matInput formControlName="referenceNote" />
+          </mat-form-field>
+
+          <button type="submit" mat-flat-button>
+            <app-icon name="add" aria-hidden="true" />
+            Record Payment
+          </button>
+        </form>
+      }
+    </mat-card>
+  }
+
+  @if (revisions().length > 0) {
+    <h3 class="revision-history-heading">Revision History</h3>
+    <mat-accordion>
+      @for (rev of revisions(); track rev.invoiceRevisionId) {
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Revision {{ rev.revisionNumber }} — {{ rev.invoiceNumber }}</mat-panel-title>
+            <mat-panel-description>
+              {{ rev.changedAt | date: 'medium' }} by {{ rev.changedByUsername }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <p class="revision-reason"><strong>Reason:</strong> {{ rev.changeReason }}</p>
+
+          <table class="revision-lines">
+            <caption class="cdk-visually-hidden">Line items in revision {{ rev.revisionNumber }}</caption>
+            <thead>
+              <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">VAT %</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (line of rev.lines; track line.lineNo) {
+                <tr>
+                  <td>{{ line.description }}</td>
+                  <td>{{ line.quantity | number: '1.3-3' }}</td>
+                  <td>{{ line.unitPrice | number: '1.3-3' }}</td>
+                  <td>{{ line.vatPct | number: '1.0-2' }}</td>
+                  <td>{{ line.lineTotal | number: '1.3-3' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          <div class="revision-totals">
+            <span>Subtotal: {{ rev.subtotal | currency: 'OMR' : 'code' : '1.3-3' }}</span>
+            <span>VAT: {{ rev.vatAmount | currency: 'OMR' : 'code' : '1.3-3' }}</span>
+            <span><strong>Grand Total: {{ rev.grandTotal | currency: 'OMR' : 'code' : '1.3-3' }}</strong></span>
+          </div>
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  }
+</div>

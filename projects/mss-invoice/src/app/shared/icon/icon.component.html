@@ -1,0 +1,184 @@
+<svg
+  [attr.width]="size"
+  [attr.height]="size"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <ng-container>
+    @switch (name) {
+      <!-- add -->
+      @case ('add') {
+        <ng-container>
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </ng-container>
+      }
+      <!-- edit / pencil -->
+      @case ('edit') {
+        <ng-container>
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+        </ng-container>
+      }
+      <!-- picture_as_pdf / document -->
+      @case ('pdf') {
+        <ng-container>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <path d="M14 2v6h6"></path>
+        </ng-container>
+      }
+      <!-- check_circle -->
+      @case ('check_circle') {
+        <ng-container>
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9 12l2 2 4-4"></path>
+        </ng-container>
+      }
+      <!-- delete / trash -->
+      @case ('delete') {
+        <ng-container>
+          <path d="M3 6h18"></path>
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+          <line x1="10" y1="11" x2="10" y2="17"></line>
+          <line x1="14" y1="11" x2="14" y2="17"></line>
+        </ng-container>
+      }
+      <!-- dashboard / grid -->
+      @case ('dashboard') {
+        <ng-container>
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </ng-container>
+      }
+      <!-- receipt_long / invoices -->
+      @case ('invoices') {
+        <ng-container>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <path d="M14 2v6h6"></path>
+          <line x1="9" y1="13" x2="15" y2="13"></line>
+          <line x1="9" y1="17" x2="15" y2="17"></line>
+        </ng-container>
+      }
+      <!-- groups / customers -->
+      @case ('customers') {
+        <ng-container>
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </ng-container>
+      }
+      <!-- inventory_2 / products -->
+      @case ('products') {
+        <ng-container>
+          <path d="M21 8L12 3 3 8l9 5 9-5Z"></path>
+          <path d="M3 8v8l9 5 9-5V8"></path>
+          <path d="M12 13v8"></path>
+        </ng-container>
+      }
+      <!-- domain / company -->
+      @case ('company') {
+        <ng-container>
+          <rect x="4" y="2" width="16" height="20" rx="1"></rect>
+          <line x1="8" y1="6" x2="8" y2="6"></line>
+          <line x1="12" y1="6" x2="12" y2="6"></line>
+          <line x1="16" y1="6" x2="16" y2="6"></line>
+          <line x1="8" y1="10" x2="8" y2="10"></line>
+          <line x1="12" y1="10" x2="12" y2="10"></line>
+          <line x1="16" y1="10" x2="16" y2="10"></line>
+          <line x1="8" y1="14" x2="8" y2="14"></line>
+          <line x1="12" y1="14" x2="12" y2="14"></line>
+          <line x1="16" y1="14" x2="16" y2="14"></line>
+        </ng-container>
+      }
+      <!-- person / user -->
+      @case ('person') {
+        <ng-container>
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </ng-container>
+      }
+      <!-- lock -->
+      @case ('lock') {
+        <ng-container>
+          <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </ng-container>
+      }
+      <!-- logout -->
+      @case ('logout') {
+        <ng-container>
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </ng-container>
+      }
+      <!-- open_in_new -->
+      @case ('open_in_new') {
+        <ng-container>
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </ng-container>
+      }
+      <!-- filter_list -->
+      @case ('filter') {
+        <ng-container>
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+        </ng-container>
+      }
+      <!-- description / contract -->
+      @case ('contract') {
+        <ng-container>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <path d="M14 2v6h6"></path>
+          <path d="M9 15l2 2 4-4"></path>
+        </ng-container>
+      }
+      <!-- search -->
+      @case ('search') {
+        <ng-container>
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </ng-container>
+      }
+      <!-- bar_chart / reports -->
+      @case ('reports') {
+        <ng-container>
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </ng-container>
+      }
+      <!-- arrow_back -->
+      @case ('back') {
+        <ng-container>
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </ng-container>
+      }
+      <!-- download -->
+      @case ('download') {
+        <ng-container>
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </ng-container>
+      }
+      <!-- attach_money / dollar-sign -->
+      @case ('currency') {
+        <ng-container>
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </ng-container>
+      }
+    }
+  </ng-container>
+</svg>

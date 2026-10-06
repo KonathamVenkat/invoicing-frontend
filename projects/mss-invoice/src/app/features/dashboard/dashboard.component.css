@@ -1,0 +1,24 @@
+.recent-card {
+  margin-top: 24px;
+}
+
+.chart-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.chart-card {
+  flex: 1 1 320px;
+}
+
+.chart-container {
+  height: 260px;
+}
+
+/* ngx-charts renders its own SVG text; force it onto the theme's surface colour so it's
+   legible against a plain (non-gradient) card body in both light and dark mode. */
+.chart-container ::ng-deep text {
+  fill: var(--mat-sys-on-surface);
+}

@@ -1,0 +1,57 @@
+@if (auth.session(); as session) {
+  <mat-toolbar class="topbar">
+    <img src="assets/logo.png" alt="MSS" class="logo" />
+    <span class="app-name">MSS Invoicing</span>
+    <span class="spacer"></span>
+    <div class="user-chip">
+      <app-icon name="person" [size]="18"></app-icon>
+      <span class="username">{{ session.username }}</span>
+    </div>
+    <button type="button" mat-icon-button (click)="logout()" aria-label="Sign out" matTooltip="Sign out">
+      <app-icon name="logout" aria-hidden="true"></app-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="shell">
+    <mat-sidenav mode="side" opened class="sidenav">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+          <app-icon name="dashboard" matListItemIcon></app-icon>
+          <span matListItemTitle>Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/invoices" routerLinkActive="active-link">
+          <app-icon name="invoices" matListItemIcon></app-icon>
+          <span matListItemTitle>Invoices</span>
+        </a>
+        <a mat-list-item routerLink="/customers" routerLinkActive="active-link">
+          <app-icon name="customers" matListItemIcon></app-icon>
+          <span matListItemTitle>Customers</span>
+        </a>
+        <a mat-list-item routerLink="/products" routerLinkActive="active-link">
+          <app-icon name="products" matListItemIcon></app-icon>
+          <span matListItemTitle>Products &amp; Services</span>
+        </a>
+        <a mat-list-item routerLink="/contracts" routerLinkActive="active-link">
+          <app-icon name="contract" matListItemIcon></app-icon>
+          <span matListItemTitle>Contracts</span>
+        </a>
+        <a mat-list-item routerLink="/reports" routerLinkActive="active-link">
+          <app-icon name="reports" matListItemIcon></app-icon>
+          <span matListItemTitle>Reports</span>
+        </a>
+        @if (auth.hasRole('ADMIN')) {
+          <a mat-list-item routerLink="/company" routerLinkActive="active-link">
+            <app-icon name="company" matListItemIcon></app-icon>
+            <span matListItemTitle>Company Settings</span>
+          </a>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <router-outlet></router-outlet>
+}

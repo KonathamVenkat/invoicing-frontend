@@ -1,0 +1,40 @@
+.filters-card {
+  padding: 16px 20px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.filters-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.filters-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.filter-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  width: 200px;
+}
+
+.clear-btn {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+
