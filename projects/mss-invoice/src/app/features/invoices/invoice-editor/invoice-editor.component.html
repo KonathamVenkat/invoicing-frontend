@@ -23,6 +23,7 @@
     }
     @if (invoiceId() && !readOnly() && !correctionMode()) {
       <button type="button" mat-stroked-button (click)="issue()">
+        <app-icon name="check_circle" aria-hidden="true" />
         Issue
       </button>
     }

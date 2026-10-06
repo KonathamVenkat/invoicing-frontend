@@ -1,31 +1,74 @@
 .topbar {
-  /* Icon buttons in the top bar sit on the primary colour. */
-  --mat-icon-button-icon-color: var(--mat-sys-on-primary);
+  /* Brand gradient bar with a soft shadow so content scrolls "under" it. */
+  background: var(--app-grad-brand);
+  box-shadow: 0 4px 18px rgba(30, 58, 95, 0.28);
+  position: relative;
+  z-index: 3;
+  /* Icon buttons in the top bar sit on the brand colour. */
+  --mat-icon-button-icon-color: #fff;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 .logo {
-  height: 34px;
+  height: 36px;
   width: auto;
+  /* The logo is dark-on-transparent; a white chip keeps it legible on the gradient. */
+  background: #fff;
+  border-radius: 10px;
+  padding: 3px 6px;
 }
 .app-name {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 .user-chip {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin-right: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
   font-size: 13px;
+  font-weight: 500;
 }
+
 .shell {
   height: calc(100vh - 64px);
+  /* Let the page's tinted canvas show through. */
+  --mat-sidenav-container-background-color: transparent;
+  --mat-sidenav-content-background-color: transparent;
+  background: transparent;
 }
+
 .sidenav {
-  width: 260px;
+  width: 264px;
+  padding: 12px 10px;
+  background: #fff;
+  border-right: 1px solid rgba(30, 58, 95, 0.08);
+  box-shadow: 4px 0 24px rgba(30, 58, 95, 0.05);
+  --mat-sidenav-container-shape: 0;
+  --mat-sidenav-container-width: 264px;
 }
-.active-link {
-  background: var(--mat-sys-surface-container-highest);
+
+/* Navigation items: pill shape, brand-tinted hover, gradient-accent active state. */
+.sidenav a.mat-mdc-list-item {
+  --mat-list-list-item-container-shape: 12px;
+  --mat-list-list-item-leading-icon-color: #64748b;
+  --mat-list-list-item-label-text-color: #334155;
+  --mat-list-list-item-hover-label-text-color: var(--app-navy);
+  --mat-list-list-item-hover-state-layer-color: var(--app-blue);
+  --mat-list-list-item-hover-state-layer-opacity: 0.07;
+  margin-bottom: 4px;
+  transition: background-color var(--app-motion);
+}
+.sidenav a.mat-mdc-list-item.active-link {
+  background: var(--app-tint-strong);
+  --mat-list-list-item-leading-icon-color: var(--app-blue-deep);
+  --mat-list-list-item-label-text-color: var(--app-navy);
+  --mat-list-list-item-hover-label-text-color: var(--app-navy);
+  font-weight: 600;
+  box-shadow: inset 4px 0 0 var(--app-blue);
 }

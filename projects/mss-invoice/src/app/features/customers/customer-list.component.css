@@ -1,7 +1,7 @@
 .filters-card {
   padding: 16px 20px 20px;
   margin-bottom: 20px;
-  border-radius: 8px;
+  border-radius: var(--app-radius);
 }
 
 .filters-card-header {

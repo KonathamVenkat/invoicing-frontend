@@ -9,7 +9,9 @@
         <a class="tile-link" [routerLink]="tile.route">
           <mat-card class="tile-card">
             <mat-card-content>
-              <app-icon [name]="tile.icon" [size]="28" aria-hidden="true" />
+              <span [class]="'tile-icon tile-icon--' + tile.accent" aria-hidden="true">
+                <app-icon [name]="tile.icon" [size]="28" />
+              </span>
               <h3>{{ tile.title }}</h3>
               <p>{{ tile.description }}</p>
             </mat-card-content>
@@ -18,7 +20,9 @@
       } @else {
         <mat-card class="tile-card tile-card--disabled">
           <mat-card-content>
-            <app-icon [name]="tile.icon" [size]="28" aria-hidden="true" />
+            <span [class]="'tile-icon tile-icon--' + tile.accent" aria-hidden="true">
+              <app-icon [name]="tile.icon" [size]="28" />
+            </span>
             <h3>{{ tile.title }}</h3>
             <p>{{ tile.description }}</p>
             <span class="coming-soon">Coming soon</span>

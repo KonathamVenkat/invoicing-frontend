@@ -1,45 +1,91 @@
 .tile-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  gap: 20px;
 }
 
 .tile-link {
   text-decoration: none;
   color: inherit;
   display: block;
+  border-radius: var(--app-radius);
 }
 
 .tile-card {
   height: 100%;
-  transition: box-shadow 0.15s ease-in-out;
+  transition: box-shadow var(--app-motion), transform var(--app-motion);
 }
 
-.tile-link .tile-card:hover,
+.tile-link:hover .tile-card,
 .tile-link:focus-visible .tile-card {
-  box-shadow: var(--mat-sys-level3);
+  transform: translateY(-4px);
+  --mat-card-elevated-container-elevation: var(--app-shadow-lg);
 }
 
 .tile-card mat-card-content {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding: 22px 22px 24px;
 }
 
 .tile-card h3 {
-  margin: 8px 0 0;
-  font-size: 15px;
-  font-weight: 600;
+  margin: 16px 0 2px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--app-navy);
 }
 
 .tile-card p {
   margin: 0;
-  font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--app-muted);
 }
 
+/* Glossy icon tile: gradient body, a white sheen over the top half, an inner highlight edge and
+   a shadow tinted with the tile's own colour. Decorative — the card title carries the meaning. */
+.tile-icon {
+  --tile-glow: 37, 99, 235;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  color: #fff;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2),
+    0 10px 22px rgba(var(--tile-glow), 0.38);
+  transition: transform var(--app-motion);
+}
+.tile-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 46% 0;
+  border-radius: 18px 18px 60% 60% / 18px 18px 22px 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.08) 100%);
+  pointer-events: none;
+}
+.tile-icon app-icon {
+  position: relative;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+.tile-link:hover .tile-icon { transform: scale(1.06) rotate(-3deg); }
+
+.tile-icon--orange { background: var(--app-grad-orange); --tile-glow: 217, 119, 6; }
+.tile-icon--blue { background: var(--app-grad-blue); --tile-glow: 37, 99, 235; }
+.tile-icon--navy { background: var(--app-grad-brand); --tile-glow: 30, 58, 95; }
+.tile-icon--green { background: var(--app-grad-green); --tile-glow: 5, 150, 105; }
+.tile-icon--red { background: var(--app-grad-red); --tile-glow: 220, 38, 38; }
+.tile-icon--teal { background: var(--app-grad-teal); --tile-glow: 15, 118, 110; }
+
 .tile-card--disabled {
-  color: var(--mat-sys-on-surface-variant);
+  color: var(--app-muted);
 }
 
 .coming-soon {
@@ -49,8 +95,13 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: var(--mat-sys-on-surface-variant);
-  background: var(--mat-sys-surface-container-high);
+  color: var(--app-muted);
+  background: var(--app-tint);
   padding: 3px 10px;
-  border-radius: 10px;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile-link:hover .tile-card,
+  .tile-link:hover .tile-icon { transform: none; }
 }

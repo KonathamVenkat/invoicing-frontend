@@ -1,181 +1,381 @@
 /* Colours come from the Material 3 theme in material-theme.scss (var(--mat-sys-*)).
-   Visual direction: flat "invoice & billing" look (navy, paid green, overdue red, neutral grey) —
-   solid colours, hairline borders, no gradients or heavy shadows, 150ms transitions. */
+   Visual direction (UI/UX Pro Max): "Soft UI Evolution" for surfaces — soft layered depth,
+   measured contrast, 200ms motion, visible focus — with "Bento" KPI tiles (16px radius, hover lift).
+   Brand: navy #1E3A5F -> blue #2563EB. Status colours: paid green, overdue red, warning amber. */
 :root {
-  --app-navy: #1e3a5f; /* brand chrome: top bar and card header strips (white text = 11.5:1) */
-  --app-accent-teal: #0f766e;
-  --app-accent-green: #047857;
-  --app-accent-orange: #b45309;
-  --app-accent-grey: #475569;
-  --app-accent-red: #b91c1c;
-  --app-accent-blue: #1d4ed8;
-  --app-border: var(--mat-sys-outline-variant);
-  --app-motion: 150ms ease-out;
-}
+  --app-navy: #1e3a5f;
+  --app-blue: #2563eb;
+  --app-blue-deep: #1d4ed8;
+  --app-ink: #0f172a;
+  --app-muted: #475569;
+  --app-border: #e2e8f0;
+  --app-tint: #eef3fb; /* brand-tinted surface: table headers, hovered nav */
+  --app-tint-strong: #dbe7fb;
 
-/* Flat cards: drop Material's elevated-card shadow (a plain box-shadow loses to its own rule). */
-.stat-card,
-.form-card,
-.list-card,
-.filters-card {
-  --mat-card-elevated-container-elevation: none;
-  --mat-card-elevated-container-shadow-color: transparent;
-  border: 1px solid var(--app-border);
-}
+  /* White text on every gradient end below is >= 4.5:1. */
+  --app-grad-brand: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  --app-grad-teal: linear-gradient(135deg, #0f766e 0%, #0e8077 100%);
+  --app-grad-green: linear-gradient(135deg, #047857 0%, #059669 100%);
+  --app-grad-orange: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+  --app-grad-grey: linear-gradient(135deg, #475569 0%, #64748b 100%);
+  --app-grad-red: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  --app-grad-blue: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
 
-/* Card header strips are solid navy. Modifier classes only add a coloured bottom edge so cards
-   that sit side by side (dashboard charts) still read as distinct. */
-.form-card-header,
-.list-card-header {
-  background: var(--app-navy);
-  color: #fff;
-}
+  --app-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.08);
+  --app-shadow-md: 0 1px 3px rgba(30, 58, 95, 0.06), 0 8px 24px rgba(30, 58, 95, 0.09);
+  --app-shadow-lg: 0 2px 6px rgba(30, 58, 95, 0.08), 0 16px 36px rgba(30, 58, 95, 0.16);
 
-/* Stat card: a flat mat-card with a tinted icon tile at the top left (KPI tile). Colour is never
-   the only cue — each tile also carries a text label. */
-.stat-card {
-  position: relative;
-  box-shadow: none;
-  border: 1px solid var(--app-border);
-  transition: border-color var(--app-motion);
-}
-.stat-card:hover {
-  border-color: var(--mat-sys-outline);
-}
-.stat-card .mat-mdc-card-content {
-  padding-top: 8px !important;
-}
-.stat-icon {
-  width: 40px;
-  height: 40px;
-  margin: 16px 16px 0;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.stat-icon--indigo { background: #e3eaf4; color: var(--app-navy); }
-.stat-icon--teal { background: #ccfbf1; color: var(--app-accent-teal); }
-.stat-icon--pink { background: var(--mat-sys-tertiary-container); color: var(--mat-sys-on-tertiary-container); }
-.stat-icon--green { background: #d1fae5; color: var(--app-accent-green); }
-.stat-icon--orange { background: #fef3c7; color: var(--app-accent-orange); }
-.stat-icon--grey { background: #e2e8f0; color: var(--app-accent-grey); }
-.stat-icon--red { background: #fee2e2; color: var(--app-accent-red); }
-
-.stat-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--mat-sys-on-surface-variant);
-}
-.stat-value {
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.3;
-  margin-top: 4px;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Shorter variant of .stat-card for report pages (the dashboard keeps the taller default). */
-.stat-card--compact .stat-icon {
-  width: 32px;
-  height: 32px;
-  margin: 12px 16px 0;
-  border-radius: 6px;
-}
-.stat-card--compact .mat-mdc-card-content {
-  padding-top: 6px !important;
-  padding-bottom: 10px !important;
-}
-.stat-card--compact .stat-value {
-  font-size: 20px;
-}
-.stat-card--compact .stat-card-footer {
-  padding: 6px 16px;
-}
-
-.stat-card-footer {
-  padding: 10px 16px;
-  border-top: 1px solid var(--app-border);
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 12px;
+  --app-radius: 16px;
+  --app-motion: 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 html, body { height: 100%; margin: 0; }
 body {
   font-family: Inter, Roboto, "Helvetica Neue", sans-serif;
-  background: var(--mat-sys-surface-container-low);
-  color: var(--mat-sys-on-surface);
+  color: var(--app-ink);
+  /* Soft brand-tinted canvas so white cards separate clearly from the page. */
+  background:
+    radial-gradient(900px 420px at 8% -8%, #dfe9ff 0%, rgba(223, 233, 255, 0) 70%),
+    radial-gradient(700px 360px at 100% 0%, #d9f3ec 0%, rgba(217, 243, 236, 0) 65%),
+    #f3f6fb;
+  background-attachment: fixed;
 }
 
 /* Keyboard focus must always be visible (WCAG 2.4.7). */
 :focus-visible {
-  outline: 2px solid var(--app-accent-blue);
+  outline: 3px solid var(--app-blue);
   outline-offset: 2px;
 }
 
-/* Icons placed before the input (search boxes) need breathing room from the field border. */
-.mat-mdc-form-field-icon-prefix > app-icon { margin-inline: 12px 8px; color: var(--mat-sys-on-surface-variant); }
-
-.page-container { padding: 24px; max-width: 1200px; margin: 0 auto; }
-.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+/* ---------- Page ---------- */
+.page-container {
+  padding: 28px 28px 40px;
+  max-width: 1240px;
+  margin: 0 auto;
+  animation: page-in 260ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
+.page-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--app-navy);
+}
 .spacer { flex: 1 1 auto; }
 .full-width { width: 100%; }
-.form-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.form-row { display: flex; gap: 20px; flex-wrap: wrap; }
 .form-row > * { flex: 1 1 240px; }
 
-/* Row of .stat-card tiles. */
-.stat-row { margin: 8px 0 24px; }
+/* Icons placed before the input (search boxes) need breathing room from the field border. */
+.mat-mdc-form-field-icon-prefix > app-icon { margin-inline: 12px 8px; color: var(--app-muted); }
 
-.form-card {
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 24px;
-  box-shadow: none;
-  border: 1px solid var(--app-border);
+/* ---------- Surfaces: one soft elevated card look ---------- */
+.stat-card,
+.form-card,
+.list-card,
+.filters-card,
+.tile-card {
+  --mat-card-elevated-container-elevation: var(--app-shadow-md);
+  --mat-card-elevated-container-shape: var(--app-radius);
+  --mat-card-elevated-container-color: #fff;
+  border: 1px solid rgba(30, 58, 95, 0.07);
+  border-radius: var(--app-radius);
+  background: #fff;
 }
-.form-card-header { padding: 12px 24px; }
-.form-card-header h3 { margin: 0; font-size: 16px; font-weight: 600; }
-.form-card-header--teal { border-bottom: 3px solid #2dd4bf; }
-.form-card-header--pink { border-bottom: 3px solid #60a5fa; }
 
-.list-card {
-  border-radius: 8px;
-  overflow: hidden;
+/* ---------- Buttons: brand gradient with a soft glow ---------- */
+.mat-mdc-unelevated-button:not(:disabled):not(.mat-warn) {
+  background-image: var(--app-grad-brand);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  transition: box-shadow var(--app-motion), transform var(--app-motion);
+}
+.mat-mdc-unelevated-button:not(:disabled):not(.mat-warn):hover {
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.38);
+  transform: translateY(-1px);
+}
+.mat-mdc-unelevated-button:not(:disabled):not(.mat-warn):active {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+.mat-mdc-outlined-button { --mat-button-outlined-outline-color: var(--app-tint-strong); }
+.mat-mdc-icon-button { transition: background-color var(--app-motion); }
+
+/* ---------- Glossy action icons ----------
+   Edit / delete / open / download / PDF / issue get a glossy gradient tile: a white sheen over the
+   top half, an inner highlight edge, and a shadow tinted with the action's own colour. Matched by
+   the icon's static `name` attribute, so every screen picks it up with no template changes.
+   Each action also keeps its tooltip and aria-label, so colour is never the only cue.
+   White icon on every gradient end is >= 3:1 (non-text contrast). */
+app-icon[name='edit'] { --act-grad: linear-gradient(135deg, #1d4ed8, #3b82f6); --act-glow: 37, 99, 235; }
+app-icon[name='delete'] { --act-grad: linear-gradient(135deg, #b91c1c, #ef4444); --act-glow: 220, 38, 38; }
+app-icon[name='open_in_new'] { --act-grad: linear-gradient(135deg, #1e3a5f, #2563eb); --act-glow: 30, 58, 95; }
+app-icon[name='download'] { --act-grad: linear-gradient(135deg, #0f766e, #0d9488); --act-glow: 15, 118, 110; }
+app-icon[name='pdf'] { --act-grad: linear-gradient(135deg, #c2410c, #ea580c); --act-glow: 234, 88, 12; }
+app-icon[name='check_circle'] { --act-grad: linear-gradient(135deg, #047857, #059669); --act-glow: 5, 150, 105; }
+
+/* Icon-only buttons (table row actions). */
+.mat-mdc-icon-button:has(app-icon:is([name='edit'], [name='delete'], [name='open_in_new'], [name='download'], [name='pdf'], [name='check_circle'])) {
+  --mat-icon-button-icon-color: #fff;
+  --mat-icon-button-state-layer-color: #fff;
+  width: 38px;
+  height: 38px;
   padding: 0;
-  margin-bottom: 24px;
-  box-shadow: none;
-  border: 1px solid var(--app-border);
+  margin: 0 3px;
+  vertical-align: middle;
+  border-radius: 12px;
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+    0 5px 12px rgba(var(--act-glow, 37, 99, 235), 0.34);
+  transition: transform var(--app-motion), box-shadow var(--app-motion);
 }
+.mat-mdc-icon-button:has(app-icon[name='edit']) { --act-glow: 37, 99, 235; background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 52%), linear-gradient(135deg, #1d4ed8, #3b82f6); }
+.mat-mdc-icon-button:has(app-icon[name='delete']) { --act-glow: 220, 38, 38; background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 52%), linear-gradient(135deg, #b91c1c, #ef4444); }
+.mat-mdc-icon-button:has(app-icon[name='open_in_new']) { --act-glow: 30, 58, 95; background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 52%), linear-gradient(135deg, #1e3a5f, #2563eb); }
+.mat-mdc-icon-button:has(app-icon[name='download']) { --act-glow: 15, 118, 110; background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 52%), linear-gradient(135deg, #0f766e, #0d9488); }
+.mat-mdc-icon-button:has(app-icon[name='pdf']) { --act-glow: 234, 88, 12; background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 52%), linear-gradient(135deg, #c2410c, #ea580c); }
+.mat-mdc-icon-button:has(app-icon[name='check_circle']) { --act-glow: 5, 150, 105; background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 52%), linear-gradient(135deg, #047857, #059669); }
+.mat-mdc-icon-button:has(app-icon:is([name='edit'], [name='delete'], [name='open_in_new'], [name='download'], [name='pdf'], [name='check_circle'])):hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+    0 9px 18px rgba(var(--act-glow, 37, 99, 235), 0.45);
+}
+.mat-mdc-icon-button:has(app-icon:is([name='edit'], [name='delete'], [name='open_in_new'], [name='download'], [name='pdf'], [name='check_circle'])):active { transform: none; }
+.mat-mdc-icon-button:has(app-icon:is([name='edit'], [name='delete'], [name='open_in_new'], [name='download'], [name='pdf'], [name='check_circle'])) app-icon {
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+}
+.mat-mdc-icon-button:disabled:has(app-icon:is([name='edit'], [name='delete'], [name='open_in_new'], [name='download'], [name='pdf'], [name='check_circle'])) {
+  opacity: 0.45;
+  filter: grayscale(0.6);
+  box-shadow: none;
+}
+
+/* Icons beside a button label ("Correct Invoice", "PDF", "Export CSV"): a small glossy chip. */
+:is(.mat-mdc-button, .mat-mdc-outlined-button, .mat-mdc-unelevated-button) app-icon:is([name='edit'], [name='delete'], [name='open_in_new'], [name='download'], [name='pdf'], [name='check_circle']) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: 0 8px 0 -6px;
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 52%), var(--act-grad);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.18),
+    0 3px 8px rgba(var(--act-glow, 37, 99, 235), 0.32);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+/* On the brand-gradient primary button the coloured chip would blend in: use glass instead. */
+.mat-mdc-unelevated-button app-icon:is([name='edit'], [name='delete'], [name='open_in_new'], [name='download'], [name='pdf'], [name='check_circle']) {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.05) 100%), rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 0, 0, 0.12), 0 3px 8px rgba(0, 0, 0, 0.18);
+}
+
+/* ---------- Form fields: rounder, brand focus ---------- */
+.mat-mdc-form-field {
+  --mat-form-field-outlined-container-shape: 12px;
+  --mat-form-field-outlined-focus-outline-color: var(--app-blue);
+  --mat-form-field-outlined-focus-label-text-color: var(--app-blue-deep);
+  --mat-form-field-outlined-outline-color: #b8c4d6;
+  --mat-form-field-outlined-hover-outline-color: var(--app-navy);
+}
+
+/* ---------- Read-only / disabled fields ----------
+   Material greys these out at 38% opacity on a square grey fill, which makes the data of an
+   issued invoice hard to read and leaves square corners behind the rounded outline. Treat them
+   as read-only values instead: soft tinted surface, matching 12px corners, quiet outline,
+   full-strength text (>= 4.5:1), muted-but-legible label, no pointer affordance. */
+.mat-mdc-form-field.mat-form-field-disabled {
+  --mat-icon-button-disabled-icon-color: #7b8aa0;
+  --mat-datepicker-toggle-disabled-icon-color: #7b8aa0;
+  --mat-select-disabled-text-color: #1e293b;
+  --mat-select-arrow-disabled-icon-color: #7b8aa0;
+}
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-text-field-wrapper.mdc-text-field--disabled {
+  /* !important: Material's disabled fill is set by a higher-specificity component rule. */
+  background-color: #f4f7fb !important;
+  border-radius: 12px;
+  cursor: default;
+}
+.mat-mdc-form-field.mat-form-field-disabled .mdc-text-field--disabled .mdc-text-field__input,
+.mat-mdc-form-field.mat-form-field-disabled .mdc-text-field--disabled textarea,
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-select-disabled .mat-mdc-select-value,
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-select-disabled .mat-mdc-select-value-text {
+  color: #1e293b;
+  -webkit-text-fill-color: #1e293b;
+  cursor: default;
+}
+.mat-mdc-form-field.mat-form-field-disabled .mdc-text-field--disabled .mdc-floating-label,
+.mat-mdc-form-field.mat-form-field-disabled .mdc-text-field--disabled .mdc-floating-label--float-above,
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-form-field-subscript-wrapper {
+  color: #566377;
+}
+.mat-mdc-form-field.mat-form-field-disabled .mdc-text-field--disabled .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-form-field-disabled .mdc-text-field--disabled .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-form-field-disabled .mdc-text-field--disabled .mdc-notched-outline__trailing {
+  border-color: #dbe3ef;
+}
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-select-disabled .mat-mdc-select-arrow {
+  color: #7b8aa0;
+}
+
+/* ---------- KPI tiles (Bento) ---------- */
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  --stat-accent: #2563eb;
+  --mat-card-elevated-container-color: #fff;
+  /* Soft corner glow in the tile's own accent colour (decorative only). Drawn as a background:
+     Material's card owns the ::before/::after pseudo-elements for its outline layer. */
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--stat-accent) 14%, transparent) 0, transparent 150px),
+    #fff;
+  transition: box-shadow var(--app-motion), transform var(--app-motion);
+}
+.stat-card:has(.stat-icon--indigo) { --stat-accent: #1e3a5f; }
+.stat-card:has(.stat-icon--teal) { --stat-accent: #0f766e; }
+.stat-card:has(.stat-icon--pink) { --stat-accent: #2563eb; }
+.stat-card:has(.stat-icon--green) { --stat-accent: #059669; }
+.stat-card:has(.stat-icon--orange) { --stat-accent: #d97706; }
+.stat-card:has(.stat-icon--grey) { --stat-accent: #64748b; }
+.stat-card:has(.stat-icon--red) { --stat-accent: #dc2626; }
+.stat-card:hover {
+  transform: translateY(-3px);
+  --mat-card-elevated-container-elevation: var(--app-shadow-lg);
+}
+.stat-card .mat-mdc-card-content {
+  padding-top: 8px !important;
+}
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  margin: 18px 18px 0;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -3px 7px rgba(0, 0, 0, 0.18),
+    0 8px 16px rgba(15, 23, 42, 0.2);
+}
+/* Glossy sheen across the top half (decorative). */
+.stat-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 48% 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.05) 100%);
+  pointer-events: none;
+}
+.stat-icon app-icon { position: relative; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3)); }
+.stat-icon--indigo { background: var(--app-grad-brand); }
+.stat-icon--teal { background: var(--app-grad-teal); }
+.stat-icon--pink { background: var(--app-grad-blue); }
+.stat-icon--green { background: var(--app-grad-green); }
+.stat-icon--orange { background: var(--app-grad-orange); }
+.stat-icon--grey { background: var(--app-grad-grey); }
+.stat-icon--red { background: var(--app-grad-red); }
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--app-muted);
+}
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 6px;
+  letter-spacing: -0.02em;
+  color: var(--app-ink);
+  font-variant-numeric: tabular-nums;
+}
+.stat-card-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--app-border);
+  background: #f8fafc;
+  color: var(--app-muted);
+  font-size: 12.5px;
+}
+
+/* Shorter variant for report pages (the dashboard keeps the taller default). */
+.stat-card--compact .stat-icon {
+  width: 38px;
+  height: 38px;
+  margin: 14px 16px 0;
+  border-radius: 11px;
+}
+.stat-card--compact .mat-mdc-card-content {
+  padding-top: 6px !important;
+  padding-bottom: 10px !important;
+}
+.stat-card--compact .stat-value { font-size: 22px; }
+.stat-card--compact .stat-card-footer { padding: 6px 16px; }
+
+/* Row of .stat-card tiles. */
+.stat-row { margin: 4px 0 28px; }
+
+/* ---------- Card header strips: brand gradient ---------- */
+.form-card { overflow: hidden; margin-bottom: 24px; }
+.form-card-header,
+.list-card-header {
+  background: var(--app-grad-brand);
+  color: #fff;
+}
+.form-card-header { padding: 14px 24px; }
+.form-card-header h3,
+.list-card-header h3 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.form-card-header--teal { background: var(--app-grad-teal); }
+.form-card-header--pink { background: var(--app-grad-blue); }
+
+.list-card { overflow: hidden; padding: 0; margin-bottom: 24px; }
 .list-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 16px 22px;
 }
-.list-card-header h3 { margin: 0; font-size: 16px; font-weight: 600; }
 .list-count {
   font-size: 12.5px;
   font-weight: 600;
   color: #fff;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.18);
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: 999px;
 }
+
+/* ---------- Tables ---------- */
 .list-card table.full-width { width: 100%; }
 .list-card th.mat-mdc-header-cell {
-  background: var(--mat-sys-surface-container);
-  font-weight: 600;
-  font-size: 12.5px;
+  background: var(--app-tint);
+  font-weight: 700;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--mat-sys-on-surface-variant);
+  letter-spacing: 0.06em;
+  color: #334e75;
+  border-bottom: 1px solid var(--app-tint-strong);
 }
 .list-card th.mat-mdc-header-cell,
 .list-card td.mat-mdc-cell { padding: 0 16px; }
-.list-card tr.mat-mdc-row { height: 52px; transition: background-color var(--app-motion); }
-.list-card tr.mat-mdc-row:hover { background: var(--mat-sys-surface-container-high); }
+.list-card tr.mat-mdc-row { height: 56px; transition: background-color var(--app-motion); }
+.list-card tr.mat-mdc-row:nth-child(even) { background: #fafcff; }
+.list-card tr.mat-mdc-row:hover { background: #eef4ff; }
 /* Amounts line up by digit so columns of money are easy to scan and compare. */
 .list-card td.mat-mdc-cell,
 .mat-mdc-table td { font-variant-numeric: tabular-nums; }
@@ -187,39 +387,36 @@ body {
    the next value (e.g. a status chip) don't read as one block. */
 .list-card th.col-right + th.mat-mdc-header-cell,
 .list-card td.col-right + td.mat-mdc-cell { padding-left: 32px; }
-.empty-state { padding: 32px; text-align: center; color: var(--mat-sys-on-surface-variant); }
+.empty-state { padding: 40px 32px; text-align: center; color: var(--app-muted); }
 
 /* Stands in for an invoice number on drafts (dashboard and invoice list). */
-.draft-label { color: var(--mat-sys-on-surface-variant); font-style: italic; }
+.draft-label { color: var(--app-muted); font-style: italic; }
 
-/* Status chips: draft = neutral grey, issued/paid = green, cancelled/overdue = red.
+/* ---------- Status chips ----------
+   Draft = neutral grey, issued/paid = green, cancelled/overdue = red, expiring = amber.
    The label always says the status too, so colour is never the only cue. */
-.status-chip { --mat-chip-outline-color: transparent; }
+.status-chip {
+  --mat-chip-outline-color: transparent;
+  --mat-chip-label-text-weight: 600;
+  --mat-chip-container-shape-radius: 999px;
+}
 .status-chip.status-draft {
   --mat-chip-elevated-container-color: #e2e8f0;
   --mat-chip-label-text-color: #334155;
 }
-.status-chip.status-issued {
-  --mat-chip-elevated-container-color: #d1fae5;
-  --mat-chip-label-text-color: #065f46;
-}
-.status-chip.status-cancelled {
-  --mat-chip-elevated-container-color: #fee2e2;
-  --mat-chip-label-text-color: #991b1b;
-}
-
-/* Contract expiry chips (active/expiring-soon/expired) reuse the same chip look. */
+.status-chip.status-issued,
 .status-chip.status-active {
   --mat-chip-elevated-container-color: #d1fae5;
   --mat-chip-label-text-color: #065f46;
 }
-.status-chip.status-expiring-soon {
-  --mat-chip-elevated-container-color: #fef3c7;
-  --mat-chip-label-text-color: #92400e;
-}
+.status-chip.status-cancelled,
 .status-chip.status-expired {
   --mat-chip-elevated-container-color: #fee2e2;
   --mat-chip-label-text-color: #991b1b;
+}
+.status-chip.status-expiring-soon {
+  --mat-chip-elevated-container-color: #fef3c7;
+  --mat-chip-label-text-color: #92400e;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -227,4 +424,6 @@ body {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+  .stat-card:hover,
+  .mat-mdc-unelevated-button:hover { transform: none; }
 }

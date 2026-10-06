@@ -4,10 +4,14 @@ import { MatCardModule } from '@angular/material/card';
 
 import { IconComponent } from '../../shared/icon/icon.component';
 
+/** Colour of the glossy icon tile; see .tile-icon--* in the component CSS. */
+type TileAccent = 'orange' | 'blue' | 'navy' | 'green' | 'red' | 'teal';
+
 interface ReportTile {
   title: string;
   description: string;
   icon: string;
+  accent: TileAccent;
   route: string | null;
 }
 
@@ -15,37 +19,43 @@ const REPORT_TILES: ReportTile[] = [
   {
     title: 'AR Aging',
     description: 'Outstanding balances per customer, bucketed by days overdue.',
-    icon: 'reports',
+    icon: 'hourglass',
+    accent: 'orange',
     route: '/reports/ar-aging',
   },
   {
     title: 'VAT Summary',
     description: 'Subtotal, VAT and total by month or quarter, for VAT filing.',
-    icon: 'reports',
+    icon: 'percent',
+    accent: 'blue',
     route: '/reports/vat-summary',
   },
   {
     title: 'Customer Statement',
     description: 'All invoices and running balance for one customer.',
-    icon: 'reports',
+    icon: 'statement',
+    accent: 'navy',
     route: '/reports/customer-statement',
   },
   {
     title: 'Product / Service Revenue',
     description: 'Revenue breakdown by product or service.',
-    icon: 'reports',
+    icon: 'trending',
+    accent: 'green',
     route: '/reports/product-revenue',
   },
   {
     title: 'Contract Expiry / Renewal',
     description: 'Active, expiring-soon and expired contracts per customer/product.',
-    icon: 'reports',
+    icon: 'calendar',
+    accent: 'red',
     route: '/reports/contract-expiry',
   },
   {
     title: 'Invoice Register',
     description: 'Full issued-invoice listing for a period, export-friendly.',
-    icon: 'reports',
+    icon: 'register',
+    accent: 'teal',
     route: '/reports/invoice-register',
   },
 ];

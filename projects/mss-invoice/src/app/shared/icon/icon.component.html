@@ -179,6 +179,58 @@
           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
         </ng-container>
       }
+      <!-- hourglass: AR aging (time overdue) -->
+      @case ('hourglass') {
+        <ng-container>
+          <path d="M5 22h14"></path>
+          <path d="M5 2h14"></path>
+          <path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"></path>
+          <path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"></path>
+        </ng-container>
+      }
+      <!-- percent: VAT / tax -->
+      @case ('percent') {
+        <ng-container>
+          <line x1="19" y1="5" x2="5" y2="19"></line>
+          <circle cx="6.5" cy="6.5" r="2.5"></circle>
+          <circle cx="17.5" cy="17.5" r="2.5"></circle>
+        </ng-container>
+      }
+      <!-- statement: document with a person (customer statement) -->
+      @case ('statement') {
+        <ng-container>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <path d="M14 2v6h6"></path>
+          <circle cx="12" cy="13" r="2"></circle>
+          <path d="M8 19c0-2 1.8-3 4-3s4 1 4 3"></path>
+        </ng-container>
+      }
+      <!-- trending_up: revenue -->
+      @case ('trending') {
+        <ng-container>
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+          <polyline points="16 7 22 7 22 13"></polyline>
+        </ng-container>
+      }
+      <!-- calendar with clock: contract expiry / renewal -->
+      @case ('calendar') {
+        <ng-container>
+          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+          <path d="M12 13v3l1.5 1.5"></path>
+        </ng-container>
+      }
+      <!-- clipboard list: invoice register -->
+      @case ('register') {
+        <ng-container>
+          <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <line x1="9" y1="12" x2="15" y2="12"></line>
+          <line x1="9" y1="16" x2="15" y2="16"></line>
+        </ng-container>
+      }
     }
   </ng-container>
 </svg>

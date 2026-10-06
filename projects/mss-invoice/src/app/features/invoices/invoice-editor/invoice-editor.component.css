@@ -187,6 +187,7 @@
 }
 
 /* Destructive action: shown in the theme's error colour. */
+/* The delete icon is a glossy red tile (styles.css); this only adds space after the line total. */
 .remove-line-button {
-  --mat-icon-button-icon-color: var(--mat-sys-error);
+  margin-left: 12px;
 }
